@@ -1,0 +1,134 @@
+@import url("https://rsms.me/inter/inter.css");
+@supports (font-variation-settings: normal) {
+  :root { font-family: 'Inter var', sans-serif; }
+}
+
+:root {
+  font-family: 'Inter', sans-serif;
+  --text-color: #373f45;
+  --background-color: #F2F2F2;
+  --first-gradient-color: rgba(0, 152, 155, 1);
+  --second-gradient-color: rgba(0, 94, 120, 1);
+  --font-size: 4rem;
+  --big-font-size: 5rem;
+  --small-font-size: 1rem;
+  --border-radius: 6px;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  width: min(80vw, 900px);
+  margin: auto;
+}
+
+h1 {
+  font-size: var(--big-font-size);
+  width: min(80vw, 900px);
+  margin: 2rem auto;
+  border-bottom: 10px solid var(--text-color);
+}
+
+.emoji {
+  font-size: 9rem;
+  aspect-ratio: 1;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--background-color);
+}
+
+.emoji:hover {
+  cursor: pointer;
+  transition:all .5s ease-in-out;
+  background: var(--first-gradient-color);
+}
+
+.recto {
+  background: var(--second-gradient-color);
+}
+
+.verso {
+  background: var(--first-gradient-color);
+}
+
+.verso:hover {
+  cursor: default;
+}
+
+.found,
+.found:hover {
+  background: var(--text-color);
+}
+
+footer {
+  width: min(80vw, 900px);
+  margin: 1rem auto;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(75px, 1fr)
+  );
+  grid-template-rows: auto;
+  gap: 0px 8px;
+}
+
+footer .footer-cases {
+  background: var(--text-color);
+  border-radius: var(--border-radius);
+  color: var(--background-color);
+  padding: 15px;
+  margin: 0;
+}
+
+footer [id^='msg-'] {
+  font-weight: 900;
+}
+
+#btn-reset {
+  font-family: 'Inter', sans-serif;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  border: 1px solid var(--second-gradient-color);
+  background-color: var(--first-gradient-color);
+  color: var(--background-color);
+  font-size: var(--small-font-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#btn-reset:hover,
+#btn-reset:focus {
+  background-color: var(--second-gradient-color);
+}
+
+
+@media (max-width: 480px){
+  main {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    width: 90vw;
+    gap: 5px;
+  }
+
+  h1{
+    margin: 0 auto 2rem auto;
+  }
+  
+  .emoji {
+    font-size: 4rem;
+  }
+
+  footer {
+    width: 90vw;
+    margin: 1rem auto;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 5px;
+    padding-top: 1rem;
+  }
+}

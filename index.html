@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>(WIP) Memojy - a memory game with emojis</title>
+    <meta name="description" content="A memory game with emojis" />
+    <meta name="author" content="Flora GC" />
+
+    <meta property="og:title" content="Memojy - a memory game with emojis" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.memojy.floragc.dev/" />
+    <meta property="og:description" content="A memory game with emojis" />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="preload"
+      href="styles/style.css"
+      type="text/css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet';"/>
+  </head>
+
+  <body>
+    <h1>Memojy</h1>
+    <main></main>
+    <footer>
+      <p class="footer-cases">Guesses : <span id="msg-guesses"></span></p>
+      <p class="footer-cases">Guessed pairs : <span id="msg-guessed-pairs"></span></p>
+      <button type="button" id="btn-reset">Reset game</button>
+    </footer>
+
+    <script src="scripts/conf.js"></script>
+    <script src="scripts/view.js"></script>
+    <script src="scripts/game.js"></script>
+  </body>
+</html>
