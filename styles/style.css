@@ -13,32 +13,46 @@
   --big-font-size: 5rem;
   --small-font-size: 1rem;
   --border-radius: 6px;
+  --page-size: min(95vh, 900px);
+  --game-width: min(60vh, 100%);
+  --game-gutter: 1rem;
 }
 
 main {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
-  width: min(80vw, 900px);
+  width: var(--page-size);
+  height: var(--page-size);
   margin: auto;
+}
+
+#game{
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr 1fr; 
+  gap: 5px 5px; 
+  grid-template-areas: 
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . ."; 
+  margin: var(--game-gutter) auto;
+  width: var(--game-width);
 }
 
 h1 {
   font-size: var(--big-font-size);
-  width: min(80vw, 900px);
-  margin: 2rem auto;
+  width: var(--game-width);
+  margin: var(--game-gutter) auto;
   border-bottom: 10px solid var(--text-color);
 }
 
 .emoji {
-  font-size: 9rem;
+  font-size: 6rem;
   aspect-ratio: 1;
   border-radius: var(--border-radius);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  padding: 0;
   color: var(--background-color);
 }
 
@@ -66,7 +80,7 @@ h1 {
 }
 
 footer {
-  width: min(80vw, 900px);
+  width: var(--game-width);
   margin: 1rem auto;
   justify-content: center;
   display: grid;
@@ -129,6 +143,5 @@ footer [id^='msg-'] {
     margin: 1rem auto;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 5px;
-    padding-top: 1rem;
   }
 }

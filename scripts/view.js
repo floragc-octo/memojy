@@ -8,7 +8,7 @@ const CN_verso = "verso"
 // QUERY SELECTORS
 const QS_guessed_pairs = document.querySelector("#msg-guessed-pairs")
 const QS_guesses = document.querySelector("#msg-guesses")
-const QS_main = document.querySelector("main")
+const QS_main = document.querySelector("#game")
 
 // FUNCTIONS
 function HideCardsNonFound() {
@@ -74,7 +74,7 @@ const addCardToGrid = (index) => {
     if (this.classList.contains(CN_found)) return;
     displayCard(this);
   });
-  document.querySelector("main").appendChild(child);
+  QS_main.appendChild(child);
 };
 
 document.querySelector("#btn-reset").addEventListener("click", function () {
