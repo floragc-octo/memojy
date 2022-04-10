@@ -1,88 +1,135 @@
 // MAGIC STRINGS
-const CN_separator = " "
-const CN_emoji = "emoji"
-const CN_found = "found"
-const CN_recto = "recto"
-const CN_verso = "verso"
+const CLASSNAME_emoji = "emoji";
+const CLASSNAME_found = "found";
+const CLASSNAME_recto = "recto";
+const CLASSNAME_verso = "verso";
+const DISABLED = "disabled";
+const ENTER_SELECTION = "Enter";
 
 // QUERY SELECTORS
-const QS_guessed_pairs = document.querySelector("#msg-guessed-pairs")
-const QS_guesses = document.querySelector("#msg-guesses")
-const QS_main = document.querySelector("#game")
+const QS_guessed_pairs = document.querySelector("#msg-guessed-pairs");
+const QS_guesses = document.querySelector("#msg-guesses");
+const QS_main = document.querySelector("#game");
 
 // FUNCTIONS
-function HideCardsNonFound() {
-  const cards = document.querySelectorAll(`.${CN_emoji}`);
-  [].forEach.call(cards, function (card) {
-    if (!foundCards.includes(card.id)) {
-      card.className = [`${CN_emoji} ${CN_recto}`];
+function disableAllCards() {
+  document.querySelectorAll(`.${CLASSNAME_emoji}`).forEach(function (card) {
+    if (!game.isFoundCard(card.id)) {
+      card.classList.add(DISABLED);
+    }
+  });
+}
+
+function hideCardsNonFound() {
+  document.querySelectorAll(`.${CLASSNAME_emoji}`).forEach(function (card) {
+    if (!game.isFoundCard(card.id)) {
+      card.className = [`${CLASSNAME_emoji} ${CLASSNAME_recto}`];
       card.innerHTML = "";
     }
   });
 }
 
-function displayFoundPairsMessage(foundPairs) {
-  QS_guessed_pairs.innerHTML = `${foundPairs}/${
-    MAX_GRID_SIZE / 2
-  }`;
+function displayFoundPairsMessage() {
+  QS_guessed_pairs.innerHTML = game.getScorePairs();
 }
 
-function displayGuessesMessage(guesses) {
-    QS_guesses.innerHTML = guesses;
+function displayGuessesMessage() {
+  QS_guesses.innerHTML = game.getScoreGuesses();
 }
 
 function updateGuessedCard(id) {
-  const cards = document.querySelectorAll(`.${CN_emoji}`);
+  const cards = document.querySelectorAll(`.${CLASSNAME_emoji}`);
   [].forEach.call(cards, function (card) {
     if (card.id == id) {
-      card.className += CN_separator+CN_found;
+      card.className += " " + CLASSNAME_found;
+      game.addFoundCard(card.id);
     }
   });
 }
+// @TODO: display should not trigger verification
+// it should be //
+const displayCard = async (card) => {
+  if (game.isSelectingFirstCard()) {
+    hideCardsNonFound();
+    card.className = [`${CLASSNAME_emoji} ${CLASSNAME_verso}`];
+    card.innerHTML = board.getcardById(card.id);
+    game.makeGuess(card.id);
+  } else {
+    if (game.isSelectingSecondCard()) {
+      if (game.selectedCards[0].id !== card.id) {
+        card.className = [`${CLASSNAME_emoji} ${CLASSNAME_verso}`];
+        card.innerHTML = board.getcardById(card.id);
+        game.makeGuess(card.id);
 
-const displayCard = (index) => {
-  const isFirstSelection = selectedCards.length == 0;
-  const isSecondSelection = selectedCards.length == 1;
-  if (isFirstSelection) {
-    HideCardsNonFound();
-    index.className = [`${CN_emoji}${CN_separator}${CN_verso}`];
-    index.innerHTML = shuffledCards[index.id];
-    selectedCards.push(index);
-  }
-  if (isSecondSelection) {
-    index.className = [`${CN_emoji}${CN_separator}${CN_verso}`];
-    index.innerHTML = shuffledCards[index.id];
-    selectedCards.push(index);
-    if (isPaire()) {
-      foundCards.push(selectedCards[0].id);
-      updateGuessedCard(selectedCards[0].id);
-      foundCards.push(selectedCards[1].id);
-      updateGuessedCard(selectedCards[1].id);
-      updateFoundPairs();
+        if (board.isAPair(game.selectedCards[0], game.selectedCards[1])) {
+          updateGuessedCard(game.selectedCards[0]);
+          updateGuessedCard(game.selectedCards[1]);
+          game.incrementFoundPairs();
+
+          displayFoundPairsMessage(game.getScorePairs());
+        }
+
+        game.endGuess();
+
+        displayGuessesMessage(game.getScoreGuesses());
+        disableAllCards();
+        await setTimeout(hideCardsNonFound, 500);
+      }
     }
-    updateGuesses();
-    selectedCards = [];
-    // setTimeout(HideCardsNonFound, 1000);
   }
 };
 
+const emptyGrid = () => (QS_main.innerHTML = "");
+
 const addCardToGrid = (index) => {
-  const child = document.createElement("div");
-  child.className = [`${CN_emoji}${CN_separator}${CN_recto}`];
+  const child = document.createElement("button");
+  child.className = [`${CLASSNAME_emoji} ${CLASSNAME_recto}`];
   child.id = index;
+  child.tabIndex = 0;
   child.addEventListener("click", function () {
-    if (this.classList.contains(CN_found)) return;
+    if (
+      this.classList.contains(CLASSNAME_found) ||
+      this.classList.contains(DISABLED)
+    )
+      return;
     displayCard(this);
+  });
+  child.addEventListener("keydown", function (e) {
+    if (ENTER_SELECTION === e.key) {
+      if (
+        this.classList.contains(CLASSNAME_found) ||
+        this.classList.contains(DISABLED)
+      )
+        return;
+      displayCard(this);
+    }
   });
   QS_main.appendChild(child);
 };
 
 document.querySelector("#btn-reset").addEventListener("click", function () {
-  populateMemojy();
+  startNewGame();
+  displayBoard();
+});
+
+document.querySelector("#btn-reset").addEventListener("keydown", function (e) {
+  if (ENTER_SELECTION === e.key) {
+    startNewGame();
+    displayBoard();
+  }
 });
 
 const addCardsToGrid = () => {
-  for (let i = 0; i < MAX_GRID_SIZE; i++) {
+  for (let i = 0; i < board.gridSize; i++) {
     addCardToGrid(i);
   }
+};
+
+const displayBoard = () => {
+  emptyGrid();
+
+  displayFoundPairsMessage(0);
+  displayGuessesMessage(0);
+
+  addCardsToGrid();
 };
