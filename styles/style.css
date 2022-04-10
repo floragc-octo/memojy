@@ -7,6 +7,10 @@
   font-family: 'Inter', sans-serif;
   --text-color: #373f45;
   --background-color: #F2F2F2;
+  --button-background: rgba(0, 152, 155, 1);
+  --button-color: #000;
+  --button-hover-background: rgba(0, 94, 120, 1);
+  --button-hover-color: #cdcdcd;
   --first-gradient-color: rgba(0, 152, 155, 1);
   --second-gradient-color: rgba(0, 94, 120, 1);
   --font-size: 4rem;
@@ -46,7 +50,7 @@ h1 {
 }
 
 .emoji {
-  font-size: 6rem;
+  font-size: 5rem;
   aspect-ratio: 1;
   border-radius: var(--border-radius);
   display: flex;
@@ -56,18 +60,24 @@ h1 {
   color: var(--background-color);
 }
 
-.emoji:hover {
+.emoji:not(.found):hover,
+.emoji:not(.found):focus {
   cursor: pointer;
-  transition:all .5s ease-in-out;
-  background: var(--first-gradient-color);
+  transition:all .3s ease-in-out;
+  background: var(--button-background);
+}
+
+.emoji.disabled {
+  cursor: not-allowed;
+  background: var(--button-hover-background);
 }
 
 .recto {
-  background: var(--second-gradient-color);
+  background: var(--button-hover-background);
 }
 
 .verso {
-  background: var(--first-gradient-color);
+  background: var(--button-background);
 }
 
 .verso:hover {
@@ -111,7 +121,7 @@ footer [id^='msg-'] {
   color: var(--text-color);
   border: 1px solid var(--second-gradient-color);
   background-color: var(--first-gradient-color);
-  color: var(--background-color);
+  color: #000;
   font-size: var(--small-font-size);
   font-weight: 600;
   cursor: pointer;
@@ -119,7 +129,8 @@ footer [id^='msg-'] {
 
 #btn-reset:hover,
 #btn-reset:focus {
-  background-color: var(--second-gradient-color);
+  background-color: var(--button-hover-background);
+  color: var(--button-hover-color);
 }
 
 
